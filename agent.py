@@ -13,7 +13,6 @@ from rl_algorithms.lfa_sarsa import LFASARSA
 from rl_algorithms.lfa_q_learning import LFAQLearning
 from rl_algorithms.lfa_sarsa_lambda import LFASARSALambda
 from rl_algorithms.lfa_q_lambda import LFAQLambda
-from rl_algorithms.tabular_dyna_q import TabularDynaQ
 from rl_algorithms.REINFORCE import REINFORCE
 from rl_algorithms.actor_critic_eligibility_traces import ActorCriticEligibilityTraces
 from rl_algorithms.lspi import LSPI
