@@ -1,6 +1,6 @@
 # Reinforcement Learning Algorithms
 
-This repository provides implementation for some popular Reinforcement Learning algorithms that were tested with OpenAI Gym.
+This repository provides implementation for some popular reinforcement learning algorithms that were tested with OpenAI Gym.
 
 ## Table of Contents
 
@@ -44,7 +44,7 @@ The features in Linear Function Approximation methods can be constructed with th
 - Fourier Basis
 
 
-Furthermore, a method has been implemented to discretize continuous spaces.
+Furthermore, `discretizer.py` implements a method to discretize continuous spaces.
 
 ## Getting Started
 
