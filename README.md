@@ -1,5 +1,7 @@
+**Status:** Maintenance
+
 # Reinforcement Learning Algorithms
-This repository provides implementation for some popular Reinforcement Learning algorithms. All code is written in Python 3 and uses environments from OpenAI Gym.
+This repository provides implementation for some popular Reinforcement Learning algorithms. OpenAI Gym was used to test the algorithms.
 
 ## Dependencies
 
