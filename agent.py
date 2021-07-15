@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from typing import Tuple
 import gym
 import numpy as np
 from rl_algorithms.policy_iteration import PolicyIteration
@@ -25,8 +26,8 @@ from features.rbf import RBF
 
 
 def main():
-    #env_name = 'MountainCar-v0'
-    env_name = 'FrozenLake-v0'
+    env_name = 'MountainCar-v0'
+    #env_name = 'FrozenLake-v0'
     env = gym.make(env_name)
 
     training_episodes = 2000
@@ -40,37 +41,37 @@ def main():
         discrete = False
     elif type(env.observation_space) is gym.spaces.Discrete:
         discrete = True
-    
+
     ############################################# TABULAR METHODS #############################################
     initial_learning_rate = 0.1
     learning_rate_steepness = 0.01
     learning_rate_midpoint = 1500
     lambda_ = 0.5
-    
+
     n_bins = (20, 20)
     discretizer = Discretizer(discrete, n_bins, env.observation_space)
-
+    '''
     tabular_monte_carlo = TabularMonteCarlo(env, discount_factor, discretizer)
     tabular_monte_carlo.train(training_episodes)
-    print(tabular_monte_carlo.q_table)
-    #tabular_monte_carlo.run(run_episodes, True)
-    '''
+
     tabular_sarsa = TabularSARSA(env, learning_rate_midpoint, discount_factor,
                                  initial_learning_rate, learning_rate_steepness, discretizer)
     tabular_sarsa.train(training_episodes)
-    
+    '''
     tabular_q_learning = TabularQLearning(
         env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, discretizer)
     tabular_q_learning.train(training_episodes)
-    
+    input()
+    tabular_q_learning.run(1, True)
+    '''
     tabular_sarsa_lambda = TabularSARSALambda(
         env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, discretizer, lambda_)
     tabular_sarsa_lambda.train(training_episodes)
-    
+
     tabular_q_lambda = TabularQLambda(env, learning_rate_midpoint, discount_factor,
                                       initial_learning_rate, learning_rate_steepness, discretizer, lambda_)
     tabular_q_lambda.train(training_episodes)
-    
+
     ############################################# LFA METHODS #############################################
     tiles_per_dimension = [14, 14]
     displacement_vector = [1, 1]
@@ -78,7 +79,7 @@ def main():
     initial_learning_rate = 0.1 / n_tilings
     feature_constructor = TileCoding(
         env.action_space.n, n_tilings, tiles_per_dimension, env.observation_space, displacement_vector)
-    
+
     n_order = 1
     feature_constructor = Polynomials(
         env.action_space.n, n_order, n_dimensions)
@@ -91,7 +92,7 @@ def main():
     denominator = np.where(denominator == 0, 1, denominator)
     denominator = np.repeat(denominator, env.action_space.n)
     initial_learning_rate = 0.01 / denominator
-    
+
     rbf_standard_deviation = 0.25
     centers_per_dimension = [
         [0.2, 0.4, 0.6, 0.8],
@@ -99,7 +100,7 @@ def main():
     ]
     feature_constructor = RBF(
         env.action_space.n, env.observation_space, centers_per_dimension, rbf_standard_deviation)
-    
+
     lfa_sarsa = LFASARSA(env, learning_rate_midpoint, discount_factor,
                          initial_learning_rate, learning_rate_steepness, feature_constructor)
     lfa_sarsa.train(training_episodes)
@@ -107,12 +108,12 @@ def main():
     lfa_q_learning = LFAQLearning(env, learning_rate_midpoint, discount_factor,
                                   initial_learning_rate, learning_rate_steepness, feature_constructor)
     lfa_q_learning.train(training_episodes)
-    
+
     lfa_sarsa_lambda = LFASARSALambda(env, learning_rate_midpoint, discount_factor,
                                       initial_learning_rate, learning_rate_steepness, feature_constructor, lambda_)
     lfa_sarsa_lambda.train(training_episodes)
     #np.save(samples_filename, lfa_sarsa_lambda.sample_set, allow_pickle=True)
-    
+
     lfa_q_lambda = LFAQLambda(env, learning_rate_midpoint, discount_factor,
                               initial_learning_rate, learning_rate_steepness, feature_constructor, lambda_)
     lfa_q_lambda.train(training_episodes)
@@ -120,12 +121,16 @@ def main():
     tolerance = 0
     delta = 0
     pre_calculate_features = True
+    n_samples = 10000
     lspi = LSPI(env, discount_factor, feature_constructor)
-    # lspi.gather_samples(n_samples)
-    lspi.sample_set = np.load(samples_filename, allow_pickle=True)
-    lspi.train(training_episodes, delta=delta, pre_calculate_features=pre_calculate_features)
+    lspi.gather_samples(n_samples)
+    #np.save(samples_filename, lspi.sample_set, allow_pickle=True)
+    #lspi.sample_set = np.load(samples_filename, allow_pickle=True)
+    lspi.train(training_episodes, delta=delta,
+               pre_calculate_features=pre_calculate_features)
     lspi.run(run_episodes)
     '''
+
 
 if __name__ == '__main__':
     main()

@@ -36,7 +36,8 @@ class TileCoding(FeatureConstructor):
                 self.tilings[tiling_i][dimension_i] = self.tilings[tiling_i -
                                                                    1][dimension_i] - tiling_offset[dimension_i]
 
-        self.info = 'Tile Coding: tilings = {}, tiles per dimension = {}, displacement vector = {}'.format(self.n_tilings, self.tiles_per_dimension, displacement_vector)
+        self.info = 'Tile Coding: tilings = {}, tiles per dimension = {}, displacement vector = {}'.format(
+            self.n_tilings, self.tiles_per_dimension, displacement_vector)
 
     def get_active_features(self, variable):
         indices = np.zeros((self.n_tilings,), object)

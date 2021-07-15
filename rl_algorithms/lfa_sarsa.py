@@ -9,13 +9,14 @@ class LFASARSA:
     def __init__(self, env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, feature_constructor):
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
-            log_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s')
+            log_formatter = logging.Formatter(
+                '%(asctime)s %(name)s %(levelname)s %(message)s')
             file_handler = logging.FileHandler('info.log')
             file_handler.setFormatter(log_formatter)
-            self.logger.addHandler(file_handler) 
+            self.logger.addHandler(file_handler)
             console_handler = logging.StreamHandler()
             console_handler.setFormatter(log_formatter)
-            self.logger.addHandler(console_handler) 
+            self.logger.addHandler(console_handler)
             self.logger.setLevel(logging.INFO)
 
         self.env = env

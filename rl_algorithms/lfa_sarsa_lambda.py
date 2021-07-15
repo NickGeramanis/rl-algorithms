@@ -9,13 +9,14 @@ class LFASARSALambda:
     def __init__(self, env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, feature_constructor, lambda_):
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
-            log_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s')
+            log_formatter = logging.Formatter(
+                '%(asctime)s %(name)s %(levelname)s %(message)s')
             file_handler = logging.FileHandler('info.log')
             file_handler.setFormatter(log_formatter)
-            self.logger.addHandler(file_handler) 
+            self.logger.addHandler(file_handler)
             console_handler = logging.StreamHandler()
             console_handler.setFormatter(log_formatter)
-            self.logger.addHandler(console_handler) 
+            self.logger.addHandler(console_handler)
             self.logger.setLevel(logging.INFO)
 
         self.env = env
@@ -26,7 +27,6 @@ class LFASARSALambda:
         self.learning_rate_midpoint = learning_rate_midpoint
         self.learning_rate_steepness = learning_rate_steepness
 
-        self.sample_set = []
         self.feature_constructor = feature_constructor
         self.weights = np.random.random((self.feature_constructor.n_features,))
 
@@ -65,8 +65,6 @@ class LFASARSALambda:
 
             while not done:
                 next_state, reward, done, _ = self.env.step(current_action)
-                self.sample_set.append((
-                    current_state, current_action, reward, next_state, done))
                 episode_reward += reward
                 episode_actions += 1
 

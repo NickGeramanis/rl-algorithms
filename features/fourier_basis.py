@@ -15,7 +15,7 @@ class FourierBasis(FeatureConstructor):
 
         self.integer_vector = list(itertools.product(
             np.arange(n_order + 1), repeat=n_dimensions))
-        
+
         self.info = 'Fourier Basis: order = {}'.format(n_order)
 
     def calculate_q(self, weights, state):

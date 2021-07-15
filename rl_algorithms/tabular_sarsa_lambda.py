@@ -9,13 +9,14 @@ class TabularSARSALambda:
     def __init__(self, env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, discretizer, lambda_):
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
-            log_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s')
+            log_formatter = logging.Formatter(
+                '%(asctime)s %(name)s %(levelname)s %(message)s')
             file_handler = logging.FileHandler('info3.log')
             file_handler.setFormatter(log_formatter)
-            self.logger.addHandler(file_handler) 
+            self.logger.addHandler(file_handler)
             console_handler = logging.StreamHandler()
             console_handler.setFormatter(log_formatter)
-            self.logger.addHandler(console_handler) 
+            self.logger.addHandler(console_handler)
             self.logger.setLevel(logging.INFO)
 
         self.env = env
@@ -29,7 +30,7 @@ class TabularSARSALambda:
 
         self.q_table = np.random.random(
             (self.discretizer.n_bins + (self.env.action_space.n,)))
-        
+
         self.logger.info('Tabular SARSA(lambda): discount factor = {}, lambda = {}, learning rate midpoint = {}, learning rate steepness = {}, initial learning rate = {}'.format(
             self.discount_factor, self.lambda_, self.learning_rate_midpoint, self.learning_rate_steepness, self.initial_learning_rate))
         self.logger.info(self.discretizer.info)

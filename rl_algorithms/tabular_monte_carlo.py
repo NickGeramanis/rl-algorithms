@@ -60,7 +60,7 @@ class TabularMonteCarlo:
 
                 episode_samples.append((state, action, reward))
 
-            #first-visit mc
+            # first-visit mc
             return_ = 0
             proccesed_samples = []
             for sample in reversed(episode_samples):

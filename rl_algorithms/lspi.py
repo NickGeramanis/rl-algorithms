@@ -72,18 +72,18 @@ class LSPI:
                     self.feature_constructor.calculate_q(self.weights, sample[3]))
                 next_features = self.feature_constructor.get_features(
                     sample[3], best_action)
-            
+
             if features_list is not None:
                 current_features = features_list[sample_i]
                 sample_i += 1
             else:
                 current_features = self.feature_constructor.get_features(
                     sample[0], sample[1])
-            
+
             A += np.outer(current_features, (current_features -
                                              self.discount_factor * next_features))
             b += current_features * sample[2]
-        
+
         rank = np.linalg.matrix_rank(A)
         if rank == self.feature_constructor.n_features:
             A_inverse = np.linalg.inv(A)
