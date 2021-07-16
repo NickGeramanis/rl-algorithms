@@ -1,6 +1,4 @@
 import numpy as np
-import math
-import random
 import itertools
 from features.feature_constructor import FeatureConstructor
 
