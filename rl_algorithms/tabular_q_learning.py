@@ -1,12 +1,15 @@
-import numpy as np
+import logging
 import math
 import random
-import logging
+
+import numpy as np
 
 
 class TabularQLearning:
 
-    def __init__(self, env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, discretizer):
+    def __init__(self, env, learning_rate_midpoint, discount_factor,
+                 initial_learning_rate, learning_rate_steepness,
+                 discretizer):
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
             log_formatter = logging.Formatter(
@@ -30,8 +33,11 @@ class TabularQLearning:
         self.q_table = np.random.random(
             (self.discretizer.n_bins + (self.env.action_space.n,)))
 
-        self.logger.info('Tabular Q-Learning: discount factor = {}, learning rate midpoint = {}, learning rate steepness = {}, initial learning rate = {}'.format(
-            self.discount_factor, self.learning_rate_midpoint, self.learning_rate_steepness, self.initial_learning_rate))
+        self.logger.info(f'Tabular Q-Learning:\
+            discount factor = {self.discount_factor},\
+            learning rate midpoint = {self.learning_rate_midpoint},\
+            learning rate steepness = {self.learning_rate_steepness},\
+            initial learning rate = {self.initial_learning_rate}')
         self.logger.info(self.discretizer.info)
 
     def train(self, training_episodes):
@@ -78,8 +84,8 @@ class TabularQLearning:
 
                 current_state = next_state
 
-            self.logger.info('episode={}|reward={}|actions={}'.format(
-                episode_i, episode_reward, episode_actions))
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
+                |actions={episode_actions}')
 
     def run(self, episodes, render=False):
         for episode_i in range(episodes):
@@ -98,5 +104,5 @@ class TabularQLearning:
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info('episode={}|reward={}|actions={}'.format(
-                episode_i, episode_reward, episode_actions))
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
+                |actions={episode_actions}')

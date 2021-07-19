@@ -8,16 +8,20 @@ class Discretizer:
 
         if self.discrete:
             self.n_bins = (observation_space.n,)
-        else:
-            self.n_bins = n_bins
-            self.n_dimensions = len(n_bins)
+            self.info = f'Discrete state space'
+            return
 
-            self.bins = np.empty((self.n_dimensions,), dtype=object)
-            for dimension_i in range(self.n_dimensions):
-                self.bins[dimension_i] = np.linspace(
-                    observation_space.low[dimension_i], observation_space.high[dimension_i], n_bins[dimension_i] + 1)
+        self.n_bins = n_bins
+        self.n_dimensions = len(n_bins)
 
-        self.info = 'Discretizer: bins = {}'.format(self.n_bins)
+        self.bins = np.empty((self.n_dimensions,), dtype=object)
+        for dimension_i in range(self.n_dimensions):
+            self.bins[dimension_i] = np.linspace(
+                observation_space.low[dimension_i],
+                observation_space.high[dimension_i],
+                n_bins[dimension_i] + 1)
+        
+        self.info = f'Discretizer: bins = {self.bins}'
 
     def get_state(self, observation):
         if self.discrete:

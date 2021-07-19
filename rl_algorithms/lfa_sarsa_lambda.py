@@ -1,12 +1,15 @@
-import numpy as np
+import logging
 import math
 import random
-import logging
+
+import numpy as np
 
 
 class LFASARSALambda:
 
-    def __init__(self, env, learning_rate_midpoint, discount_factor, initial_learning_rate, learning_rate_steepness, feature_constructor, lambda_):
+    def __init__(self, env, learning_rate_midpoint, discount_factor,
+                 initial_learning_rate, learning_rate_steepness,
+                 feature_constructor, lambda_):
         self.logger = logging.getLogger(__name__)
         if not self.logger.handlers:
             log_formatter = logging.Formatter(
@@ -30,8 +33,11 @@ class LFASARSALambda:
         self.feature_constructor = feature_constructor
         self.weights = np.random.random((self.feature_constructor.n_features,))
 
-        self.logger.info('SARSA(lambda) with Linear Function Approximation: discount factor = {}, lambda = {}, learning rate midpoint = {}, learning rate steepness = {}, initial learning rate = {}'.format(
-            self.discount_factor, self.lambda_, self.learning_rate_midpoint, self.learning_rate_steepness, self.initial_learning_rate))
+        self.logger.info(f'SARSA(lambda) with Linear Function Approximation:\
+            discount factor = {self.discount_factor}, lambda = {self.lambda_},\
+            learning rate midpoint = {self.learning_rate_midpoint},\
+            learning rate steepness = {self.learning_rate_steepness},\
+            initial learning rate = {self.initial_learning_rate}')
         self.logger.info(self.feature_constructor.info)
 
     def train(self, training_episodes):
@@ -83,8 +89,8 @@ class LFASARSALambda:
                         next_q_values[next_action]
                 td_error = td_target - current_q_values[current_action]
 
-                eligibility_traces = self.discount_factor * self.lambda_ * eligibility_traces + \
-                    self.feature_constructor.get_features(
+                eligibility_traces = self.discount_factor * self.lambda_ * \
+                    eligibility_traces + self.feature_constructor.get_features(
                         current_state, current_action)
 
                 self.weights += learning_rate * td_error * eligibility_traces
@@ -93,8 +99,8 @@ class LFASARSALambda:
                 current_action = next_action
                 current_q_values = next_q_values
 
-            self.logger.info('episode={}|reward={}|actions={}'.format(
-                episode_i, episode_reward, episode_actions))
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
+                |actions={episode_actions}')
 
     def run(self, episodes, render=False):
         for episode_i in range(episodes):
@@ -114,5 +120,5 @@ class LFASARSALambda:
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info('episode={}|reward={}|actions={}'.format(
-                episode_i, episode_reward, episode_actions))
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
+                |actions={episode_actions}')

@@ -1,6 +1,8 @@
-import numpy as np
 import itertools
 import math
+
+import numpy as np
+
 from features.feature_constructor import FeatureConstructor
 
 
@@ -15,8 +17,8 @@ class FourierBasis(FeatureConstructor):
 
         self.integer_vector = list(itertools.product(
             np.arange(n_order + 1), repeat=n_dimensions))
-
-        self.info = 'Fourier Basis: order = {}'.format(n_order)
+        
+        self.info = f'Fourier Basis: order = {n_order}'
 
     def calculate_q(self, weights, state):
         q = np.empty((self.n_actions,))

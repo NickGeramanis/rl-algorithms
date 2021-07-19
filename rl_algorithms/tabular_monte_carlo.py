@@ -1,6 +1,7 @@
-import numpy as np
 import logging
 import random
+
+import numpy as np
 
 
 class TabularMonteCarlo:
@@ -26,10 +27,11 @@ class TabularMonteCarlo:
         self.q_table = np.random.random(
             (self.discretizer.n_bins + (self.env.action_space.n,)))
         self.returns = np.empty(
-            (self.discretizer.n_bins + (self.env.action_space.n,)), dtype=object)
+            (self.discretizer.n_bins + (self.env.action_space.n,)),
+            dtype=object)
 
         self.logger.info(
-            'Tabular Monte Carlo: discount factor = {}'.format(self.discount_factor))
+            f'Tabular Monte Carlo: discount factor = {self.discount_factor}')
         self.logger.info(self.discretizer.info)
 
     def train(self, training_episodes):
@@ -81,8 +83,8 @@ class TabularMonteCarlo:
                 self.q_table[state + (action,)
                              ] = np.mean(self.returns[state + (action,)])
 
-            self.logger.info('episode={}|reward={}|actions={}'.format(
-                episode_i, episode_reward, episode_actions))
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
+                |actions={episode_actions}')
 
     def run(self, episodes, render=False):
         for episode_i in range(episodes):
@@ -101,5 +103,5 @@ class TabularMonteCarlo:
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info('episode={}|reward={}|actions={}'.format(
-                episode_i, episode_reward, episode_actions))
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
+                |actions={episode_actions}')

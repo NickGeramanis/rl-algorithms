@@ -1,5 +1,7 @@
-import numpy as np
 import itertools
+
+import numpy as np
+
 from features.feature_constructor import FeatureConstructor
 
 
@@ -14,7 +16,7 @@ class Polynomials(FeatureConstructor):
         self.exponents = list(itertools.product(
             np.arange(n_order + 1), repeat=n_dimensions))
 
-        self.info = 'Polynomials: order = {}'.format(n_order)
+        self.info = f'Polynomials: order = {n_order}'
 
     def calculate_q(self, weights, state):
         q = np.empty((self.n_actions,))
