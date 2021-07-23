@@ -1,10 +1,15 @@
-class FeatureConstructor:
+from abc import ABC, abstractmethod
+
+
+class FeatureConstructor(ABC):
 
     def __init__(self):
         pass
 
+    @abstractmethod
     def get_features(self, state, action):
         pass
 
-    def calculate_q(self, weights, state, features=None):
+    @abstractmethod
+    def calculate_q(self, weights, state):
         pass

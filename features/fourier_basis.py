@@ -17,7 +17,7 @@ class FourierBasis(FeatureConstructor):
 
         self.integer_vector = list(itertools.product(
             np.arange(n_order + 1), repeat=n_dimensions))
-        
+
         self.info = f'Fourier Basis: order = {n_order}'
 
     def calculate_q(self, weights, state):
@@ -39,5 +39,5 @@ class FourierBasis(FeatureConstructor):
         return features
 
     def normalize(self, value):
-        return (value - self.observation_space.low) / \
-               (self.observation_space.high - self.observation_space.low)
+        return ((value - self.observation_space.low)
+                / (self.observation_space.high - self.observation_space.low))

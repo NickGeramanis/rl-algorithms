@@ -1,4 +1,7 @@
-class PolicyIteration:
+from rl_algorithms.rl_algorithm import RLAlgorithhm
+
+
+class PolicyIteration(RLAlgorithhm):
 
     def __init__(self):
-        pass
+        RLAlgorithhm.__init__(self)

@@ -1,29 +1,17 @@
-import logging
 import random
 
 import numpy as np
 
+from rl_algorithms.rl_algorithm import RLAlgorithhm
 
-class TabularMonteCarlo:
+
+class TabularMonteCarlo(RLAlgorithhm):
 
     def __init__(self, env, discount_factor, discretizer):
-        self.logger = logging.getLogger(__name__)
-        if not self.logger.handlers:
-            log_formatter = logging.Formatter(
-                '%(asctime)s %(name)s %(levelname)s %(message)s')
-            file_handler = logging.FileHandler('info.log')
-            file_handler.setFormatter(log_formatter)
-            self.logger.addHandler(file_handler)
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(log_formatter)
-            self.logger.addHandler(console_handler)
-            self.logger.setLevel(logging.INFO)
-
+        RLAlgorithhm.__init__(self)
         self.env = env
-
         self.discount_factor = discount_factor
         self.discretizer = discretizer
-
         self.q_table = np.random.random(
             (self.discretizer.n_bins + (self.env.action_space.n,)))
         self.returns = np.empty(
@@ -80,11 +68,11 @@ class TabularMonteCarlo:
                 else:
                     self.returns[state + (action,)].append(return_)
 
-                self.q_table[state + (action,)
-                             ] = np.mean(self.returns[state + (action,)])
+                self.q_table[state + (action,)] = (
+                    np.mean(self.returns[state + (action,)]))
 
-            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
-                |actions={episode_actions}')
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
+                             f'|actions={episode_actions}')
 
     def run(self, episodes, render=False):
         for episode_i in range(episodes):
@@ -103,5 +91,5 @@ class TabularMonteCarlo:
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
-                |actions={episode_actions}')
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
+                             f'|actions={episode_actions}')

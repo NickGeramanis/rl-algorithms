@@ -1,27 +1,14 @@
-import logging
-
 import numpy as np
 
+from rl_algorithms.rl_algorithm import RLAlgorithhm
 
-class LSPI:
+
+class LSPI(RLAlgorithhm):
 
     def __init__(self, env, discount_factor, feature_constructor):
-        self.logger = logging.getLogger(__name__)
-        if not self.logger.handlers:
-            log_formatter = logging.Formatter(
-                '%(asctime)s %(name)s %(levelname)s %(message)s')
-            file_handler = logging.FileHandler('info.log')
-            file_handler.setFormatter(log_formatter)
-            self.logger.addHandler(file_handler)
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(log_formatter)
-            self.logger.addHandler(console_handler)
-            self.logger.setLevel(logging.INFO)
-
+        RLAlgorithhm.__init__(self)
         self.env = env
-
         self.discount_factor = discount_factor
-
         self.feature_constructor = feature_constructor
         self.weights = None
         self.sample_set = None
@@ -110,8 +97,8 @@ class LSPI:
             new_weights = self.lstdq(features_list, delta)
 
             weights_difference = np.linalg.norm(new_weights - self.weights)
-            self.logger.info(f'episode={episode_i}|\
-                weights_difference={weights_difference}')
+            self.logger.info(f'episode={episode_i}|'
+                             f'weights_difference={weights_difference}')
 
             if weights_difference <= tolerance:
                 break
@@ -133,5 +120,5 @@ class LSPI:
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info(f'episode={episode_i}|\
-                reward={episode_reward}|actions={episode_actions}')
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
+                             f'|actions={episode_actions}')

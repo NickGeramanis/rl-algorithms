@@ -1,43 +1,32 @@
-import logging
 import math
 import random
 
 import numpy as np
 
+from rl_algorithms.rl_algorithm import RLAlgorithhm
 
-class TabularQLearning:
+
+class TabularQLearning(RLAlgorithhm):
 
     def __init__(self, env, learning_rate_midpoint, discount_factor,
                  initial_learning_rate, learning_rate_steepness,
                  discretizer):
-        self.logger = logging.getLogger(__name__)
-        if not self.logger.handlers:
-            log_formatter = logging.Formatter(
-                '%(asctime)s %(name)s %(levelname)s %(message)s')
-            file_handler = logging.FileHandler('info2.log')
-            file_handler.setFormatter(log_formatter)
-            self.logger.addHandler(file_handler)
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(log_formatter)
-            self.logger.addHandler(console_handler)
-            self.logger.setLevel(logging.INFO)
-
+        RLAlgorithhm.__init__(self)
         self.env = env
-
         self.discount_factor = discount_factor
         self.initial_learning_rate = initial_learning_rate
         self.learning_rate_steepness = learning_rate_steepness
         self.learning_rate_midpoint = learning_rate_midpoint
         self.discretizer = discretizer
-
         self.q_table = np.random.random(
             (self.discretizer.n_bins + (self.env.action_space.n,)))
 
-        self.logger.info(f'Tabular Q-Learning:\
-            discount factor = {self.discount_factor},\
-            learning rate midpoint = {self.learning_rate_midpoint},\
-            learning rate steepness = {self.learning_rate_steepness},\
-            initial learning rate = {self.initial_learning_rate}')
+        self.logger.info(
+            'Tabular Q-Learning:'
+            f'discount factor = {self.discount_factor},'
+            f'learning rate midpoint = {self.learning_rate_midpoint},'
+            f'learning rate steepness = {self.learning_rate_steepness},'
+            f'initial learning rate = {self.initial_learning_rate}')
         self.logger.info(self.discretizer.info)
 
     def train(self, training_episodes):
@@ -46,9 +35,11 @@ class TabularQLearning:
             episode_actions = 0
 
             try:
-                learning_rate = self.initial_learning_rate / \
-                    (1 + math.exp(self.learning_rate_steepness *
-                                  (episode_i - self.learning_rate_midpoint)))
+                learning_rate = (
+                    self.initial_learning_rate
+                    / (1 + math.exp(
+                        self.learning_rate_steepness
+                        * (episode_i - self.learning_rate_midpoint))))
             except OverflowError:
                 learning_rate = 0
 
@@ -75,8 +66,8 @@ class TabularQLearning:
                 if done:
                     td_target = reward
                 else:
-                    td_target = reward + self.discount_factor * \
-                        max(self.q_table[next_state])
+                    td_target = reward + (self.discount_factor
+                                          * max(self.q_table[next_state]))
 
                 td_error = td_target - self.q_table[current_state + (action,)]
                 self.q_table[current_state +
@@ -84,8 +75,8 @@ class TabularQLearning:
 
                 current_state = next_state
 
-            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
-                |actions={episode_actions}')
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
+                             f'|actions={episode_actions}')
 
     def run(self, episodes, render=False):
         for episode_i in range(episodes):
@@ -104,5 +95,5 @@ class TabularQLearning:
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info(f'episode={episode_i}|reward={episode_reward}\
-                |actions={episode_actions}')
+            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
+                             f'|actions={episode_actions}')

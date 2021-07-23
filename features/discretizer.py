@@ -20,7 +20,7 @@ class Discretizer:
                 observation_space.low[dimension_i],
                 observation_space.high[dimension_i],
                 n_bins[dimension_i] + 1)
-        
+
         self.info = f'Discretizer: bins = {self.bins}'
 
     def get_state(self, observation):

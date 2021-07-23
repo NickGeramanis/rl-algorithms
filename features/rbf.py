@@ -18,9 +18,9 @@ class RBF(FeatureConstructor):
         self.n_functions = self.rbf_centers.shape[0] + 1
         self.n_features = self.n_functions * self.n_actions
 
-        self.info = f'Radial Basis Function:\
-            centers per dimension = {centers_per_dimension},\
-            standard deviation = {rbf_standard_deviation}'
+        self.info = (f'Radial Basis Function:'
+                     f'centers per dimension = {centers_per_dimension},'
+                     f'standard deviation = {rbf_standard_deviation}')
 
     def calculate_q(self, weights, state):
         q = np.empty((self.n_actions,))
@@ -38,11 +38,11 @@ class RBF(FeatureConstructor):
         for function_i in range(self.rbf_centers.shape[0]):
             feature_i = action * self.n_functions + function_i + 1
             features[feature_i] = np.exp(
-                -np.linalg.norm(state - self.rbf_centers[function_i]) ** 2 /
-                self.rbf_variance)
+                - np.linalg.norm(state - self.rbf_centers[function_i]) ** 2
+                / self.rbf_variance)
 
         return features
 
     def normalize(self, value):
-        return (value - self.observation_space.low) / \
-               (self.observation_space.high - self.observation_space.low)
+        return ((value - self.observation_space.low)
+                / (self.observation_space.high - self.observation_space.low))

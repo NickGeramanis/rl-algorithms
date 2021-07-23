@@ -9,18 +9,23 @@ class TileCoding(FeatureConstructor):
                  observation_space, displacement_vector):
         self.n_tilings = n_tilings
         self.n_actions = n_actions
-        tile_width = (observation_space.high - observation_space.low) / \
-            tiles_per_dimension
-
         self.tiles_per_dimension = np.array(tiles_per_dimension) + 1
-
         self.n_dimensions = len(self.tiles_per_dimension)
         self.tiles_per_tiling = np.prod(self.tiles_per_dimension)
         self.n_tiles = self.n_tilings * self.tiles_per_tiling
         self.n_features = self.n_tiles * self.n_actions
 
-        tiling_offset = np.array(displacement_vector) * \
-            tile_width / float(self.n_tilings)
+        self.create_tilings(observation_space, displacement_vector)
+
+        self.info = (f'Tile Coding: tilings = {self.n_tilings},'
+                     f'tiles per dimension = {self.tiles_per_dimension}')
+
+    def create_tilings(self, observation_space, displacement_vector):
+        tile_width = ((observation_space.high - observation_space.low)
+                      / self.tiles_per_dimension)
+
+        tiling_offset = (np.array(displacement_vector)
+                         * tile_width / float(self.n_tilings))
 
         self.tilings = np.empty((self.n_tilings, self.n_dimensions),
                                 dtype=object)
@@ -37,12 +42,9 @@ class TileCoding(FeatureConstructor):
         # subtract an offset from the previous tiling to create the rest.
         for tiling_i in range(1, self.n_tilings):
             for dimension_i in range(self.n_dimensions):
-                self.tilings[tiling_i, dimension_i] = \
-                    self.tilings[tiling_i - 1, dimension_i] - \
-                    tiling_offset[dimension_i]
-
-        self.info = f'Tile Coding: tilings = {self.n_tilings},\
-            tiles per dimension = {self.tiles_per_dimension}'
+                self.tilings[tiling_i, dimension_i] = (
+                    self.tilings[tiling_i - 1, dimension_i]
+                    - tiling_offset[dimension_i])
 
     def get_active_features(self, variable):
         indices = np.zeros((self.n_tilings,), object)
