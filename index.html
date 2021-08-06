@@ -1,8 +1,164 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Denoising & Inpainting using Loopy Belief Propagation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reinforcement Learning Algorithms</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .sidenav {
+        height: 100%;
+        width: 300px;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: orangered;
+        overflow: auto;
+      }
+      .sidenav a {
+        padding: 8px;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        display: block;
+        margin: 16px;
+      }
+      .sidenav a:hover {
+        color: black;
+        background: white;
+      }
+      .main {
+        margin: 16px 16px 16px 350px;
+      }
+      .main h1 {
+        font-size: 40px;
+      }
+      .main h2 {
+        font-size: 22px;
+      }
+      .main h3 {
+        font-size: 32px;
+        color: orangered;
+      }
+      .main h4 {
+        font-size: 20px;
+      }
+      .main p {
+        font-size: 18px;
+      }
+      .main a {
+        font-size: 18px;
+      }
+      .main ul {
+        font-size: 18px;
+      }
+      .main img {
+        font-size: 18px;
+      }
+    </style>
   </head>
+
   <body>
+    <div class="sidenav">
+      <a href="#home">Home</a>
+      <a href="#description">Description</a>
+      <a href="#gettingStarted">Getting Started</a>
+      <a href="#usage">Usage</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="main">
+      <h1 id="home">Reinforcement Learning Algorithms</h1>
+      <a href="https://github.com/NickGeramanis/rl-algorithms">
+        <img
+          src="images/github.png"
+          alt="GitHub image"
+          style="width: 15%; height: 15%"
+        />
+      </a>
+      <h2>
+        This repository provides an implementation for some popular
+        reinforcement learning algorithms that were tested with OpenAI Gym.
+      </h2>
+      <h3 id="description">Description</h3>
+      <p>The following algorithms have been implemented:</p>
+      <ul>
+        <li>[ ] Policy Iteration</li>
+        <li>[ ] Value Iteration</li>
+        <li>[X] Monte Carlo</li>
+      </ul>
+      <p>
+        The features in Linear Function Approximation methods can be constructed
+        with the following algorithms:
+      </p>
+      <ul>
+        <li>Polynomials</li>
+        <li>Tile Coding</li>
+        <li>Radial Basis Functions</li>
+        <li>Fourier Basis</li>
+      </ul>
+      <p>
+        Furthermore, "discretizer.py" implements a method to discretize
+        continuous spaces.
+      </p>
+      <h3 id="gettingStarted">Getting Started</h3>
+      <h4>Prerequisites</h4>
+      <p>The following libraries need to be installed:</p>
+      <ul>
+        <li>NumPy</li>
+        <li>OpenAI Gym</li>
+      </ul>
+      <h4>Installation</h4>
+      <p>
+        In order to test the algorithms you must import the appropriate package:
+      </p>
+      <p>from rl_algorithms.tabular_q_learning import TabularQLearning</p>
+      <h3 id="usage">Usage</h3>
+      <p>
+        In order to test an algorithm, you must create an instance of it with
+        the appropriate arguments.
+      </p>
+      <p>
+        env_name = 'MountainCar-v0'<br />
+        env = gym.make(env_name)<br />
+        <br />
+        initial_learning_rate = 0.1<br />
+        learning_rate_steepness = 0.01<br />
+        learning_rate_midpoint = 1500<br />
+        discount_factor = 0.99<br />
+        <br />
+        n_bins = (20, 20)<br />
+        discrete = False<br />
+        discretizer = Discretizer(discrete, n_bins, env.observation_space)<br />
+        <br />
+        tabular_q_learning = TabularQLearning(env, learning_rate_midpoint.
+        discount_factor, initial_learning_rate, learning_rate_steepness,
+        discretizer)
+      </p>
+      <p>And then execute the "train()" method:</p>
+      <p>
+        training_episodes = 2000 <br />
+        tabular_q_learning.train(training_episodes)
+      </p>
+      <img src="images/q_learning_mountain_car.gif" alt="Demonstration" />
+      <p>
+        Different algorithms require different arguments. See "agent.py" for
+        more information.
+      </p>
+      <h3 id="about">About</h3>
+      <h4>Status</h4>
+      <p>Under development.</p>
+      <h4>License</h4>
+      <p>
+        Distributed under the GPL-3.0 License. See "LICENSE" for more
+        information.
+      </p>
+      <h4>Authors</h4>
+      <a href="https://www.linkedin.com/in/nikolaos-geramanis"
+        >Nick Geramanis</a
+      >
+    </div>
   </body>
 </html>
