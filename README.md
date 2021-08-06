@@ -31,7 +31,7 @@ The following algorithms have been implemented:
 - [x] Q-Learning with Linear Function Approximation
 - [x] SARSA(λ) with Linear Function Approximation
 - [x] Q(λ) with Linear Function Approximation
-- [] REINFORCE
+- [ ] REINFORCE
 - [] Actor-Critic with Eligibility Traces
 - [] Least-Squares Policy Iteration
 - [] Deep Q-Learning
