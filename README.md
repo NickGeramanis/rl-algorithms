@@ -19,8 +19,8 @@ This repository provides an implementation for some popular reinforcement learni
 
 The following algorithms have been implemented:
 
-- [] Policy Iteration
-- [] Value Iteration
+- [ ] Policy Iteration
+- [ ] Value Iteration
 - [x] Monte Carlo
 - [x] SARSA
 - [x] Q-Learning
@@ -32,9 +32,9 @@ The following algorithms have been implemented:
 - [x] SARSA(λ) with Linear Function Approximation
 - [x] Q(λ) with Linear Function Approximation
 - [ ] REINFORCE
-- [] Actor-Critic with Eligibility Traces
-- [] Least-Squares Policy Iteration
-- [] Deep Q-Learning
+- [ ] Actor-Critic with Eligibility Traces
+- [ ] Least-Squares Policy Iteration
+- [ ] Deep Q-Learning
 
 The features in Linear Function Approximation methods can be constructed with the following algorithms:
 
