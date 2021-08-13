@@ -1,28 +1,31 @@
 import random
 
 import numpy as np
+from features.discretizer import Discretizer
+from gym import Env
 
 from rl_algorithms.rl_algorithm import RLAlgorithhm
 
 
 class TabularMonteCarlo(RLAlgorithhm):
 
-    def __init__(self, env, discount_factor, discretizer):
+    def __init__(self, env: Env, discount_factor: float,
+                 discretizer: Discretizer):
         RLAlgorithhm.__init__(self)
-        self.env = env
-        self.discount_factor = discount_factor
-        self.discretizer = discretizer
+        self.__env = env
+        self.__discount_factor = discount_factor
+        self.__discretizer = discretizer
         self.q_table = np.random.random(
-            (self.discretizer.n_bins + (self.env.action_space.n,)))
+            (self.__discretizer.n_bins + (self.__env.action_space.n,)))
         self.returns = np.empty(
-            (self.discretizer.n_bins + (self.env.action_space.n,)),
+            (self.__discretizer.n_bins + (self.__env.action_space.n,)),
             dtype=object)
 
-        self.logger.info(
-            f'Tabular Monte Carlo: discount factor = {self.discount_factor}')
-        self.logger.info(self.discretizer.info)
+        self._logger.info(
+            f'Tabular Monte Carlo: discount factor = {self.__discount_factor}')
+        self._logger.info(self.__discretizer.info)
 
-    def train(self, training_episodes):
+    def train(self, training_episodes: int) -> None:
         for episode_i in range(training_episodes):
             episode_reward = 0.0
             episode_actions = 0
@@ -34,17 +37,17 @@ class TabularMonteCarlo(RLAlgorithhm):
 
             episode_samples = []
             done = False
-            observation = self.env.reset()
+            observation = self.__env.reset()
 
             while not done:
-                state = self.discretizer.get_state(observation)
+                state = self.__discretizer.get_state(observation)
 
                 if random.random() <= epsilon:
-                    action = self.env.action_space.sample()
+                    action = self.__env.action_space.sample()
                 else:
                     action = np.argmax(self.q_table[state])
 
-                observation, reward, done, _ = self.env.step(action)
+                observation, reward, done, _ = self.__env.step(action)
                 episode_reward += reward
                 episode_actions += 1
 
@@ -57,7 +60,7 @@ class TabularMonteCarlo(RLAlgorithhm):
                 state = sample[0]
                 action = sample[1]
                 reward = sample[2]
-                return_ = self.discount_factor * return_ + reward
+                return_ = self.__discount_factor * return_ + reward
 
                 if (state, action) in proccesed_samples:
                     continue
@@ -71,25 +74,25 @@ class TabularMonteCarlo(RLAlgorithhm):
                 self.q_table[state + (action,)] = (
                     np.mean(self.returns[state + (action,)]))
 
-            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
-                             f'|actions={episode_actions}')
+            self._logger.info(f'episode={episode_i}|reward={episode_reward}'
+                              f'|actions={episode_actions}')
 
-    def run(self, episodes, render=False):
+    def run(self, episodes: int, render: bool = False) -> None:
         for episode_i in range(episodes):
             episode_reward = 0.0
             episode_actions = 0
-            observation = self.env.reset()
+            observation = self.__env.reset()
             done = False
 
             while not done:
                 if render:
-                    self.env.render()
+                    self.__env.render()
 
-                state = self.discretizer.get_state(observation)
+                state = self.__discretizer.get_state(observation)
                 action = np.argmax(self.q_table[state])
                 observation, reward, done, _ = self.env.step(action)
                 episode_reward += reward
                 episode_actions += 1
 
-            self.logger.info(f'episode={episode_i}|reward={episode_reward}'
-                             f'|actions={episode_actions}')
+            self._logger.info(f'episode={episode_i}|reward={episode_reward}'
+                              f'|actions={episode_actions}')

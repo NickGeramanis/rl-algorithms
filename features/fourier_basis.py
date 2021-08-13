@@ -1,43 +1,47 @@
+from features.feature_constructor import FeatureConstructor
 import itertools
 import math
 
 import numpy as np
-
-from features.feature_constructor import FeatureConstructor
+from gym.spaces import Box
 
 
 class FourierBasis(FeatureConstructor):
 
-    def __init__(self, n_actions, n_order, n_dimensions, observation_space):
-        self.observation_space = observation_space
-        self.n_actions = n_actions
-
-        self.n_functions = (n_order + 1) ** n_dimensions
-        self.n_features = self.n_functions * self.n_actions
+    def __init__(self, n_actions: int, n_order: int,
+                 observation_space: Box) -> None:
+        self.__observation_space = observation_space
+        self.__n_actions = n_actions
+        n_dimensions = len(self.__observation_space.high)
+        self.__n_functions = (n_order + 1) ** n_dimensions
+        self.n_features = self.__n_functions * self.__n_actions
 
         self.integer_vector = list(itertools.product(
             np.arange(n_order + 1), repeat=n_dimensions))
 
         self.info = f'Fourier Basis: order = {n_order}'
 
-    def calculate_q(self, weights, state):
-        q = np.empty((self.n_actions,))
-        for action in range(self.n_actions):
+    def calculate_q(self, weights: np.ndarray,
+                    state: np.ndarray) -> np.ndarray:
+        q = np.empty((self.__n_actions,))
+        for action in range(self.__n_actions):
             features = self.get_features(state, action)
             q[action] = np.dot(features, weights)
 
         return q
 
-    def get_features(self, state, action):
+    def get_features(self, state: np.ndarray, action: int) -> np.ndarray:
         features = np.zeros((self.n_features,))
 
-        norm_state = self.normalize(state)
-        for function_i in range(self.n_functions):
-            features[action * self.n_functions + function_i] = math.cos(
-                math.pi * np.dot(norm_state, self.integer_vector[function_i]))
+        norm_state = self.__normalize(state)
+        for function_i in range(self.__n_functions):
+            features[action * self.__n_functions + function_i] = math.cos(
+                math.pi
+                * np.dot(norm_state, self.integer_vector[function_i]))
 
         return features
 
-    def normalize(self, value):
-        return ((value - self.observation_space.low)
-                / (self.observation_space.high - self.observation_space.low))
+    def __normalize(self, value: float) -> float:
+        return ((value - self.__observation_space.low)
+                / (self.__observation_space.high
+                   - self.__observation_space.low))
